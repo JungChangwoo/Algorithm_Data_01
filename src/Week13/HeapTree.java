@@ -2,7 +2,6 @@ package Week13;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Stack;
 
 public class HeapTree {
 	
@@ -22,7 +21,7 @@ public class HeapTree {
 		System.out.println();
 		postOrderTraverse(heap);
 		System.out.println();
-		sortOut2();
+//		sortOut2();                                                                                                                              
 		sortOut();
 	}
 	
@@ -38,7 +37,7 @@ public class HeapTree {
 		System.out.println("< Max.Heap >");
 		
 		while(heap != null) {
-			System.out.println(deleteHeap()+"  "+toString2());
+//			System.out.println(deleteHeap()+"  "+toString2());
 		}
 	}
 
@@ -102,11 +101,30 @@ public class HeapTree {
 		if(node.right != null && node.right.key > node.left.key) {
 			larger = node.right;
 		}
-		if(larger.key > node.key) {
+		if(larger.key > node.key) { //자식이 부모보다 크다면,,, 바꾸고 다시 Recursion
 			swap(larger, node);
 			heapifyDownward(larger);
 		}
 		
+	}
+	// 부모 자식 관계 정렬
+	private void heapifyUpward(Node node) {
+		// 자식노드가 없는데 자식노드로 내려왔거나 index가 0인 즉, null인 부분에 도달하면 return
+		if(node == null || node.left == null) {
+			return;
+		}
+		// left right 중 누가 더 큰지 모르기 때문에 우선 left로 정함
+		Node larger = node.left;
+		// right 자식이 있고 right가 부모보다 크다면, 교환해줄 자식을 right로 설정
+		if (node.right != null && node.right.key > node.left.key) {
+			larger = node.right;
+		}
+		// 자식이 부모보다 크다면, 교환
+		if (larger.key > node.key) {
+			swap(larger, node);
+			heapifyUpward(node.parent);
+		}
+
 	}
 
 	private void buildHeap(char[] input) {
@@ -163,26 +181,6 @@ public class HeapTree {
 		return p;
 	}
 
-	// 부모 자식 관계 정렬
-	private void heapifyUpward(Node node) {
-		// 자식노드가 없는데 자식노드로 내려왔거나 index가 0인 즉, null인 부분에 도달하면 return
-		if(node == null || node.left == null) {
-			return;
-		}
-		// left right 중 누가 더 큰지 모르기 때문에 우선 left로 정함
-		Node larger = node.left;
-		// right 자식이 있고 right가 부모보다 크다면, 교환해줄 자식을 right로 설정
-		if (node.right != null && node.right.key > node.left.key) {
-			larger = node.right;
-		}
-		// 자식이 부모보다 크다면, 교환
-		if (larger.key > node.key) {
-			swap(larger, node);
-			heapifyUpward(node.parent);
-		}
-
-	}
-
 	private void swap(Node a, Node b) {
 		char temp = a.key;
 		a.key = b.key;
@@ -198,14 +196,14 @@ public class HeapTree {
 		return levelOrderTraverse(q, "");
 	}
 	
-	public String toString2() {
-		if(heap == null) {
-			return null;
-		}
-		Stack<Node> q = new Stack<Node>();
-		q.push(heap);
-		return levelOrderTraverseQ(q, "");
-	}
+//	public String toString2() {
+//		if(heap == null) {
+//			return null;
+//		}
+//		Stack<Node> q = new Stack<Node>();
+//		q.push(heap);
+//		return levelOrderTraverseQ(q, "");
+//	}
 	
 	private void preOrderTraverse(Node t) {
 		if(t != null) {
@@ -247,23 +245,23 @@ public class HeapTree {
 		return levelOrderTraverse(q, retString);
 	}
 	
-	// Stack 버전
-	private String levelOrderTraverseQ(Stack<Node> s, String retString) {
-		Node node = s.pop();
-		if(node == null) {
-			return retString;
-		}
-		retString = retString + "  "+node.key;
-		if(node.left != null) {
-			s.push(node.left);
-			retString = retString + "  "+node.key;
-			if(node.right != null) {
-				s.push(node.right);
-			}
-		}
-		return levelOrderTraverseQ(s, retString);
-		
-	}
+//	// Stack 버전
+//	private String levelOrderTraverseQ(Stack<Node> s, String retString) {
+//		Node node = s.pop();
+//		if(node == null) {
+//			return retString;
+//		}
+//		retString = retString + "  "+node.key;
+//		if(node.left != null) {
+//			s.push(node.left);
+//			retString = retString + "  "+node.key;
+//			if(node.right != null) {
+//				s.push(node.right);
+//			}
+//		}
+//		return levelOrderTraverseQ(s, retString);
+//		
+//	}
 
 	public static void main(String[] args) {
 		char[] data = { 'M', 'Y', 'U', 'N', 'G', 'I', 'S', 'W' };
